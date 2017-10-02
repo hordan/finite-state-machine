@@ -3,30 +3,54 @@ class FSM {
      * Creates new FSM instance.
      * @param config
      */
-    constructor(config) {}
+    constructor(config) {
+    this.config = config; // передаю конфиг
+    this.states = config.states; // передаю в оюъект states
+    this.arr = [this.config.initial]; // создаю массиы стэтс с первым начальным
+    this.num = 0;  // колличество моих переходов
+   }
 
     /**
      * Returns active state.
      * @returns {String}
      */
-    getState() {}
+    getState() {
+      return this.arr[this.num]; // место на котором я сейчас
+    }
 
     /**
      * Goes to specified state.
      * @param state
      */
-    changeState(state) {}
+    changeState(state) {
+      if(state in this.states){
+        this.num++;
+        this.arr.push(state);
+      } else{
+        throw new exception;
+      }
+    }
 
     /**
      * Changes state according to event transition rules.
      * @param event
      */
-    trigger(event) {}
+    trigger(event) { // случилось событие
+      var cstate = this.states[this.getState()]; // получаю объект
+      if(event in cstate.transitions){ // если событие есть в массиве событий
+        this.changeState(cstate.transitions[event]); //передаю
+      } else {
+        throw new exception;
+      }
+    }
 
-    /**
+  /**
      * Resets FSM state to initial.
      */
-    reset() {}
+    reset() {
+      this.arr.push(this.config.initial);
+      this.num++;
+    }
 
     /**
      * Returns an array of states for which there are specified event transition rules.
@@ -34,28 +58,72 @@ class FSM {
      * @param event
      * @returns {Array}
      */
-    getStates(event) {}
+    getStates(event) {
+      var arrofstates = [] ;
+      var State;
+      var Transition;
+    if (event) {
+      for(State in this.states){
+        for(Transition in this.states[State].transitions){
+          if(event === Transition){
+            arrofstates.push(State)
+          }
+        }
+      }
+    }
+    var empstring = '' ;
+    if((event=== undefined) && (event === null)){
+      for( var state2; state2<this.states.length;state2++){
+      arrofstates = push(this.states[state2]);
+    }
+    }
+    if(event === empstring){
+      for( var stat2; stat2<this.states.length;stat2++){
+      arrofstates = push(this.states[stat2]);
+    }
+}
+      return arrofstates;
+    }
 
     /**
      * Goes back to previous state.
      * Returns false if undo is not available.
      * @returns {Boolean}
      */
-    undo() {}
+    undo() {
+      if(this.arr[this.num] === this.config.initial){
+        return false;
+      }
+      if(this.num>0){
+      this.num--;
+      return true;
+    }
+      return false;
+
+    }
 
     /**
      * Goes redo to state.
      * Returns false if redo is not available.
      * @returns {Boolean}
      */
-    redo() {}
+    redo() {
+      if((this.arr.length-1) > this.num){
+        this.num++;
+        return true;
+      } else{
+      return false;
+  }
+      }
 
     /**
      * Clears transition history
      */
-    clearHistory() {}
+    clearHistory() {
+      var emptyarr = [];
+      this.arr = emptyarr;
+      this.num= 0;
+    }
 }
 
 module.exports = FSM;
-
-/** @Created by Uladzimir Halushka **/
