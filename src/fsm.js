@@ -4,9 +4,9 @@ class FSM {
      * @param config
      */
     constructor(config) {
-    this.config = config; 
-    this.states = config.states; 
-    this.arr = [config.initial]; 
+    this.config = config;
+    this.states = config.states;
+    this.arr = [config.initial];
     this.num = 0;
    }
 
@@ -73,20 +73,14 @@ class FSM {
           }
         }
       }
-    }
-    var empstring = '' ;
-    if((event=== undefined) && (event === null)){
-      for( var state2; state2<this.states.length;state2++){
-      arrofstates = push(this.states[state2]);
-    }
-    }
-    if(event === empstring){
-      for( var stat2; stat2<this.states.length;stat2++){
-      arrofstates = push(this.states[stat2]);
-    }
-}
+    } else{
+        for(var state2 in this.states){
+        arrofstates.push(state2);
+        }
+      }
       return arrofstates;
     }
+
 
     /**
      * Goes back to previous state.
