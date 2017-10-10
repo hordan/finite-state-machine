@@ -4,10 +4,10 @@ class FSM {
      * @param config
      */
     constructor(config) {
-    this.config = config; // передаю конфиг
-    this.states = config.states; // передаю в оюъект states
-    this.arr = [this.config.initial]; // создаю массиы стэтс с первым начальным
-    this.num = 0;  // колличество моих переходов
+    this.config = config; 
+    this.states = config.states; 
+    this.arr = [config.initial]; 
+    this.num = 0;
    }
 
     /**
@@ -25,6 +25,9 @@ class FSM {
     changeState(state) {
       if(state in this.states){
         this.num++;
+       if(this.num < this.arr.length) {
+          this.arr = [this.config.initial];
+        }
         this.arr.push(state);
       } else{
         throw new exception;
@@ -59,10 +62,10 @@ class FSM {
      * @returns {Array}
      */
     getStates(event) {
-      var arrofstates = [] ;
-      var State;
-      var Transition;
-    if (event) {
+    var arrofstates = [] ;
+    var State;
+    var Transition;
+    if(event){
       for(State in this.states){
         for(Transition in this.states[State].transitions){
           if(event === Transition){
@@ -90,16 +93,13 @@ class FSM {
      * Returns false if undo is not available.
      * @returns {Boolean}
      */
-    undo() {
-      if(this.arr[this.num] === this.config.initial){
+  undo() {
+      if(this.num > 0){
+        this.num--;
+        return true;
+      } else{
         return false;
       }
-      if(this.num>0){
-      this.num--;
-      return true;
-    }
-      return false;
-
     }
 
     /**
